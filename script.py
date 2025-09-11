@@ -1,45 +1,51 @@
 import os
 import json
+import subprocess
 from pathlib import Path
 
 wallpaper_file = Path("wallpaper-list.json")
-directory_path = "~/Pictures/Wallpapers/"
 counter_file = Path("counter.txt")
+directory_path = Path("~/Pictures/Wallpapers/").expanduser()
 
-# Read the current value
+# If wallpaper list doesn't exist, creates one
+if wallpaper_file.exists():
+    with open(wallpaper_file, "r") as f:
+        data = json.load(f)
+else:
+    data = {"wallpapers": []}
+
+# Adds new wallpapers if they don't already exist
+for item_name in os.listdir(directory_path):
+    if item_name not in data["wallpapers"]:
+        data["wallpapers"].append(item_name)
+
+# Saves updated list
+with open(wallpaper_file, "w") as f:
+    json.dump(data, f, indent=4)
+
+# Loads counter
 try:
     with open(counter_file, "r") as f:
         count = int(f.read())
 except FileNotFoundError:
-    count = 0  # If file doesn't exist
+    count = 0
 
-def run_i3_command(wallpaper: str):
-    import subprocess
-    command = f"feh --bg-fill {directory_path}{wallpaper}"
-    subprocess.run(["i3-msg", command])
+wallpapers = data["wallpapers"]
+if not wallpapers:
+    print("No wallpapers found.")
+    exit(1)
 
-def wallpaper_add():
-    with open(wallpaper_file, "r+") as f: # Adds item to json file unless item already in json file
-        for item_name in os.listdir(directory_path):
-            if item_name in wallpaper_file:
-                continue
-            else:
-                json.dump(item_name, f)
+index = count % len(wallpapers)
+new_wallpaper = wallpapers[index]
 
-        data = json.loads(wallpaper_file)
-        try:
-            new_wallpaper = data["wallpapers"].index[count]
-        except IndexError:
-            count = 0
-            new_wallpaper = data["wallpapers"].index[count]
-        # Increment the value
-        count += 1
-        return new_wallpaper, count
+# Set wallpaper using feh
+def set_wallpaper(wallpaper: str):
+    wallpaper_path = directory_path / wallpaper
+    subprocess.run(["feh", "--bg-fill", str(wallpaper_path)])
 
-
-wallpaper_add()
-run_i3_command(new_wallpaper)
+set_wallpaper(new_wallpaper)
 
 # Save it back
+count += 1
 with open(counter_file, "w") as f:
     f.write(str(count))
