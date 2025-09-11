@@ -10,7 +10,12 @@ directory_path = Path("~/Pictures/Wallpapers/").expanduser()
 # If wallpaper list doesn't exist, creates one
 if wallpaper_file.exists():
     with open(wallpaper_file, "r") as f:
-        data = json.load(f)
+        try:
+            data = json.load(f)
+            if "wallpapers" not in wallpaper_file:
+                data = {"wallpapers": []}
+        except json.JSONDecodeError: # if program has trouble parsing json file, it is written to from scratch
+            data = {"wallpapers": []}
 else:
     data = {"wallpapers": []}
 
