@@ -19,15 +19,26 @@ def run_i3_command(wallpaper: str):
     subprocess.run(["i3-msg", command])
 
 def wallpaper_add():
-    with open(wallpaper_file, "w") as f: # Adds item to json file unless item already in json file
+    with open(wallpaper_file, "r+") as f: # Adds item to json file unless item already in json file
         for item_name in os.listdir(directory_path):
             if item_name in wallpaper_file:
                 continue
             else:
                 json.dump(item_name, f)
 
-# Increment the value
-count += 1
+        data = json.loads(wallpaper_file)
+        try:
+            new_wallpaper = data["wallpapers"].index[count]
+        except IndexError:
+            count = 0
+            new_wallpaper = data["wallpapers"].index[count]
+        # Increment the value
+        count += 1
+        return new_wallpaper, count
+
+
+wallpaper_add()
+run_i3_command(new_wallpaper)
 
 # Save it back
 with open(counter_file, "w") as f:
