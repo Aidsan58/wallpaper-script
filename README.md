@@ -1,0 +1,1 @@
+This is a straightforward python program that iterates through a directory of wallpapers (default: located in ~/Pictures/Wallpapers). Every time the script is called in i3 (I use a keybind that I set in i3) a new wallpaper is set. When all wallpapers have been used, it goes back to the beginning of the list.
