@@ -12,9 +12,9 @@ if wallpaper_file.exists():
     with open(wallpaper_file, "r") as f:
         try:
             data = json.load(f)
-            if "wallpapers" not in wallpaper_file:
+            if "wallpapers" not in data:
                 data = {"wallpapers": []}
-        except json.JSONDecodeError: # if program has trouble parsing json file, it is written to from scratch
+        except json.JSONDecodeError: # If program has trouble parsing json file, it is written to from scratch
             data = {"wallpapers": []}
 else:
     data = {"wallpapers": []}
@@ -27,15 +27,28 @@ for item_name in os.listdir(directory_path):
             data["wallpapers"].append(item_name)
 
 # Saves updated list
-with open(wallpaper_file, "w") as f:
-    json.dump(data, f, indent=4)
+try:
+    with open(wallpaper_file, "w") as f:
+        json.dump(data, f, indent=4)
+except Exception as e:
+    print(f"Failed to write wallpaper list: {e}") # If program fails to write
 
 # Loads counter
-try:
-    with open(counter_file, "r") as f:
-        count = int(f.read())
-except FileNotFoundError:
-    count = 0
+def load_counter(counter_path: Path) -> int:
+    try:
+        with open(counter_path, "r") as f:
+            content = f.read().strip()
+            if content:
+                return int(content)
+            else:
+                raise ValueError("Counter file is empty.")
+    except (FileNotFoundError, ValueError) as e:
+        print(f"Repairing counter.txt: {e}")
+        with open(counter_path, "w") as f:
+            f.write("0")
+        return 0
+
+count = load_counter(counter_file)
 
 wallpapers = data["wallpapers"]
 if not wallpapers:
@@ -53,6 +66,5 @@ def set_wallpaper(wallpaper: str):
 set_wallpaper(new_wallpaper)
 
 # Save it back
-count += 1
 with open(counter_file, "w") as f:
     f.write(str(count))
