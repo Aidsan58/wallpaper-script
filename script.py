@@ -15,9 +15,11 @@ else:
     data = {"wallpapers": []}
 
 # Adds new wallpapers if they don't already exist
+valid_extensions = (".jpg", ".jpeg", ".png", ".bmp", ".webp")
 for item_name in os.listdir(directory_path):
-    if item_name not in data["wallpapers"]:
-        data["wallpapers"].append(item_name)
+    if item_name.lower().endswith(valid_extensions):
+        if item_name not in data["wallpapers"]:
+            data["wallpapers"].append(item_name)
 
 # Saves updated list
 with open(wallpaper_file, "w") as f:
