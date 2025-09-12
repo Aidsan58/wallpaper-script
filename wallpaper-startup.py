@@ -41,7 +41,7 @@ if not wallpapers:
     print("No wallpapers found.")
     exit(1)
 
-index = (count % len(wallpapers)) - 1 # script.py increments count by 1, so we revert this here so we get the same wallpaper
+index = (count % len(wallpapers)) - 1 # wallpaper-switcher.py increments count by 1, so we revert this here so we get the same wallpaper
 try:
     new_wallpaper = wallpapers[index]
 except IndexError:
