@@ -41,8 +41,12 @@ if not wallpapers:
     print("No wallpapers found.")
     exit(1)
 
-index = count % len(wallpapers)
-new_wallpaper = wallpapers[index]
+index = (count % len(wallpapers)) - 1 # script.py increments count by 1, so we revert this here so we get the same wallpaper
+try:
+    new_wallpaper = wallpapers[index]
+except IndexError:
+    index += 1
+    new_wallpaper = wallpapers[index]
 
 # Set wallpaper using feh
 def set_wallpaper(wallpaper: str):
