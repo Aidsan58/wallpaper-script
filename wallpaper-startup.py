@@ -6,6 +6,7 @@ from pathlib import Path
 wallpaper_file = Path("wallpaper-list.json")
 counter_file = Path("counter.txt")
 directory_path = Path("~/Pictures/Wallpapers/").expanduser()
+bool_file = Path("bool-wallpaper.txt")
 
 # If wallpaper list doesn't exist, creates one
 if wallpaper_file.exists():
@@ -41,7 +42,13 @@ if not wallpapers:
     print("No wallpapers found.")
     exit(1)
 
-index = (count % len(wallpapers)) - 1 # wallpaper-switcher.py increments count by 1, so we revert this here so we get the same wallpaper
+with open(bool_file, "r") as f:
+    content = f.read().strip()
+    if content == "true":
+        index = (count % len(wallpapers)) - 1 # wallpaper-switcher.py increments count by 1, so we revert this here so we get the same wpp
+    else:
+        index = (count % len(wallpapers)) + 1 # wallpaper-switcher-backwards.py decrements the count by 1, so we revert this to get the same wpp
+
 try:
     new_wallpaper = wallpapers[index]
 except IndexError:

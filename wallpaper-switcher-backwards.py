@@ -56,11 +56,12 @@ if not wallpapers:
     print("No wallpapers found.")
     exit(1)
 
-index = count % len(wallpapers)
+index = (count % len(wallpapers)) - 1 # This code in the backwards script goes to the previous wallpaper.
 new_wallpaper = wallpapers[index]
 
 with open(bool_file, "w") as f:
-    f.write(str("true"))
+    f.write(str("false"))
+    print("File written to.")
 
 # Set wallpaper using feh
 def set_wallpaper(wallpaper: str):
@@ -70,6 +71,6 @@ def set_wallpaper(wallpaper: str):
 set_wallpaper(new_wallpaper)
 
 # Save it back
-count += 1
+count -= 1
 with open(counter_file, "w") as f:
     f.write(str(count))
