@@ -71,6 +71,6 @@ def set_wallpaper(wallpaper: str):
 set_wallpaper(new_wallpaper)
 
 # Save it back
-count -= 1
+count = max(count - 1, 0)
 with open(counter_file, "w") as f:
     f.write(str(count))
