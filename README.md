@@ -12,7 +12,7 @@ Add these lines to your i3 config. Remember to set your preferred keybind:
 exec --no-startup-id python3 ~/.config/i3/scripts/wallpaper-swap/wallpaper-startup.py  
 \#Cycles through different wallpapers  
 bindsym $mod+KEYBIND exec --no-startup-id python3 ~/.config/i3/scripts/wallpaper-swap/wallpaper-switcher.py  
-\#Cycles backwards through different wallpapers
+\#Cycles backwards through different wallpapers    
 bindsym $mod+KEYBIND exec --nostartup-id python3 ~/.config/i3/scripts/wallpaper-swap/wallpaper-switcher-backwards.py
 
 
