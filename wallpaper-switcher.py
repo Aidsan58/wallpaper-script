@@ -51,7 +51,7 @@ def load_counter(counter_path: Path) -> int:
 
 count = load_counter(counter_file)
 
-wallpapers = data["wallpapers"]
+wallpapers = [wp for wp in data["wallpapers"] if (directory_path / wp).exists()] # checks to make sure file exists
 if not wallpapers:
     print("No wallpapers found.")
     exit(1)
