@@ -48,7 +48,7 @@ with open(bool_file, "r") as f:
         index = (count - 1) % len(wallpapers) # wallpaper-switcher.py increments count by 1, so we revert this here so we get the same wpp
     else:
         index = (count + 1) % len(wallpapers) # wallpaper-switcher-backwards.py decrements the count by 1, so we revert this to get the same wpp
-
+new_wallpaper = wallpapers[index]
 
 # Set wallpaper using feh
 def set_wallpaper(wallpaper: str):
