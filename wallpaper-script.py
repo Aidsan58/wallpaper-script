@@ -51,3 +51,62 @@ def load_counter() -> int:
         with open(counter_file, "w") as f:
             f.write("0")
         return 0
+
+def save_counter(count: int):
+    with open(counter_file, "w") as f:
+        f.write(str(count))
+
+def load_direction() -> str:
+    if not bool_file.exists():
+        with open(bool_file, "w") as f:
+            f.write("true")
+        return "true" # We need a return value even if the file doesn't exist yet, and we default to true
+    with open(bool_file, "r") as f:
+        return f.read().strip()
+
+def save_direction(direction: str):
+    with open(bool_file, "w") as f:
+        f.write(direction)
+
+def set_wallpaper(filename: str):
+    wallpaper_path = directory_path / filename
+    subprocess.run(["feh", "--bg-fill", str(wallpaper_path)])
+
+def main():
+    parser = argparse.ArgumentParser(description="Wallpaper switcher")
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--next", action="store_true", help="Set next wallpaper")
+    group.add_argument("--prev", action="store_true", help="Set previous wallpaper")
+    group.add_argument("--startup", action="store_true", help="Set wallpaper on startup")
+
+    args = parser.parse_args()
+    wallpapers = load_wallpaper_list()
+
+    if not wallpapers:
+        print("No wallpapers found.")
+        return
+    
+    count = load_counter()
+    direction = load_direction()
+
+    if args.next:
+        index = count % len(wallpapers)
+        save_direction("true")
+        set_wallpaper(wallpapers[index])
+        save_counter(count + 1)
+
+    elif args.prev:
+        index = (count - 1) % len(wallpapers)
+        save_direction("false")
+        set_wallpaper(wallpapers[index])
+        save_counter(max(count - 1, 0))
+
+    elif args.startup:
+        if direction == "true":
+            index = (count - 1) % len(wallpapers)
+        else:
+            index = (count + 1) % len(wallpapers)
+        set_wallpaper(wallpapers[index])
+
+if __name__ == "__main__":
+    main()
