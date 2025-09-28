@@ -9,10 +9,10 @@ You need to have feh and i3 installed, and a recent version of python.
 Add these lines to your i3 config. Remember to set your preferred keybind:
 
 \#Adds feh wallpaper to startup  
-exec --no-startup-id python3 ~/.config/i3/scripts/wallpaper-swap/wallpaper-startup.py  
+exec --no-startup-id python3 ~/$LOCATION/wallpaper-swap/wallpaper-startup.py  
 \#Cycles through different wallpapers  
-bindsym $mod+KEYBIND exec --no-startup-id python3 ~/.config/i3/scripts/wallpaper-swap/wallpaper-switcher.py  
+bindsym $mod+KEYBIND exec --no-startup-id python3 ~/$LOCATION/wallpaper-swap/wallpaper-switcher.py  
 \#Cycles backwards through different wallpapers    
-bindsym $mod+KEYBIND exec --nostartup-id python3 ~/.config/i3/scripts/wallpaper-swap/wallpaper-switcher-backwards.py
+bindsym $mod+KEYBIND exec --nostartup-id python3 ~/$LOCATION/wallpaper-swap/wallpaper-switcher-backwards.py
 
 
